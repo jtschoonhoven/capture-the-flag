@@ -13,17 +13,25 @@ def handle_request():
 
 
 def get():
-    offset = flask.request.args.get('offset', 0)
-    sort = flask.request.args.get('sort', 'ASC')
-    limit = flask.request.args.get('limit', 10)
+    conditions = []
+    # HACK: accepting arbitrary query params is never a good idea
+    for field, value in flask.request.args.iteritems():
+        condition = '{} = \'{}\''.format(field, value)
+        conditions.append(condition)
+
+    conditions_str = 'WHERE {}'.format('\nAND'.join(conditions)) if conditions else ''
 
     # HACK: SQL-injection vulnerability
-    users = db.fetch_all('''
+    query = '''
         SELECT id, username, file_access_path
         FROM users
-        WHERE id >= {offset}
-        ORDER BY id {sort}
-        LIMIT {limit}
-        '''.format(offset=offset, sort=sort, limit=limit)
-    )
+        {conditions}
+        ORDER BY id ASC
+        LIMIT 10
+    '''.format(conditions=conditions_str)
+
+    # HACK: this doesn't even make sense except to make injection easier
+    for query in query.split(';'):
+        if query:
+            users = db.fetch_all(query)
     return flask.render_template('users.html', users=users)

@@ -1,0 +1,4 @@
+flask==0.12.2
+flask-login==0.4.0
+peewee==2.10.1
+typing==3.6.1

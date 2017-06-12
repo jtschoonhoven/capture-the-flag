@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="container">
+        <h3>Super-Secure™ FileServer</h3>
+
+        <div class="panel panel-default container">
+
+            <div class="panel-body">
+                <a href="/files">
+                    <span class="glyphicon glyphicon-home"></span>&nbsp;
+                    files
+                </a>
+
+                {% for path_url in path_urls[1:] %}
+                    <a href={{ path_url }}>
+                        <span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+                        {{ path_url.rsplit('/')[-1] }}
+                    </a>
+                {% endfor %}
+
+                    <hr />
+
+                {% if contents %}
+                    <p>{{ contents }}</p>
+                {% else %}
+
+                    {% for dir_url in directories %}
+                        <p>
+                            <span class="glyphicon glyphicon-folder-open"></span>&nbsp;
+                            <a href={{ dir_url }}>
+                                {{ dir_url.rsplit('/')[-1] }}
+                            </a>
+                        </p>
+                    {% endfor %}
+                    {% for file_url in files %}
+                        <p>
+                            {% if is_authorized %}
+                                <span class="glyphicon glyphicon-file"></span>&nbsp;
+                            {% else %}
+                                <span class="glyphicon glyphicon-lock"></span>&nbsp;
+                            {% endif %}
+                            <a href={{ file_url }}>
+                                {{ file_url.rsplit('/')[-1] }} 
+                            </a>
+                        </p>
+                    {% endfor %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock body %}

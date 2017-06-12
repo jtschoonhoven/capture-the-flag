@@ -5,7 +5,7 @@ from flask_restful import Api
 from capture_the_flag import database as db
 from capture_the_flag.models.user import load_user_from_session, User
 from capture_the_flag.session import SuperSecureSessionInterface
-from capture_the_flag.routes import files, index, login, logout, signup
+from capture_the_flag.routes import files, index, login, logout, signup, users
 
 
 # HACK: don't serve static files from the root path
@@ -40,6 +40,7 @@ app.add_url_rule('/logout', 'logout', logout.handle_request)
 app.add_url_rule('/signup', 'signup', signup.handle_request, methods=['GET', 'POST'])
 app.add_url_rule('/files/', 'files', files.handle_request, defaults={'path': 'shared'})
 app.add_url_rule('/files/<path:path>', 'files', files.handle_request)
+app.add_url_rule('/users', 'users', users.handle_request)
 
 
 if __name__ == '__main__':

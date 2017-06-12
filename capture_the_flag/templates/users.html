@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="container">
+        <h3>Super-Secure™ FileServer</h3>
+
+        <div class="panel panel-default container">
+
+            <div class="panel-body">
+                <a href="/files" class="pull-right"><strong>View Files</strong></a>
+                <a href="/users">
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;
+                    Users
+                </a>
+
+                <hr />
+
+                <table class="table">
+                    <thead>
+                        {% if users %}
+                            {% for field in users[0].keys() %}
+                                <th>{{ field }}</th>
+                            {% endfor %}
+                        {% endif %}
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr>
+                            {% for field in user %}
+                                <td>{{ field }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% else %}
+                        <td>No users!</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

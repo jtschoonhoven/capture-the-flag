@@ -13,6 +13,7 @@ database = SqliteDatabase('{}'.format(DB_NAME))
 def execute(sql, params=None):
     # type: (str, Union[Dict, Sequence]) -> sqlite3.Cursor
     connection = database.get_conn()
+    connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
     cursor.execute(sql, params or ())
     connection.commit()

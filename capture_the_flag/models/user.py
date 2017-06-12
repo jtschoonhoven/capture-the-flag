@@ -4,6 +4,7 @@ import time
 from peewee import DoesNotExist, PrimaryKeyField, TextField
 from flask_login.mixins import UserMixin
 
+from capture_the_flag import database as db
 from capture_the_flag.models.base import BaseModel
 
 
@@ -30,7 +31,7 @@ def load_user_from_session(id):
     try:
         # HACK: should match on session_token, not permanent ID
         user = User.get(User.id == int(id))
-    except (DoesNotExist, ValueError):
+    except (DoesNotExist, ValueError, TypeError):
         return None
     return user
 
@@ -47,3 +48,6 @@ class User(BaseModel, UserMixin):
     def get_id(self):
         # HACK: this should use session_token
         return unicode(self.id)
+
+    class Meta(object):
+        db_table = 'users'

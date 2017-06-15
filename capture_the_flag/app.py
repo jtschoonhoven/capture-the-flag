@@ -1,7 +1,10 @@
 import flask
 import flask_login
-from flask_restful import Api
+import os
 
+os.chdir('<parent-directory>')
+
+from flask_restful import Api
 from capture_the_flag import database as db
 from capture_the_flag.models.user import load_user_from_session, User
 from capture_the_flag.session import SuperSecureSessionInterface

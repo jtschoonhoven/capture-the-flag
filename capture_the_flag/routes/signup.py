@@ -1,7 +1,7 @@
 import flask
 import flask_login
-from peewee import IntegrityError
 
+from peewee import IntegrityError
 from capture_the_flag.models.user import User
 
 

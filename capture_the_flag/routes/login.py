@@ -1,6 +1,5 @@
 import flask
 import flask_login
-
 from peewee import DoesNotExist
 from capture_the_flag.models.user import User
 

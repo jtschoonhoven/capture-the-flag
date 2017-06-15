@@ -1,5 +1,4 @@
 import sqlite3  # noqa
-
 from peewee import SqliteDatabase
 from typing import Dict, List, Sequence, Union  # noqa
 

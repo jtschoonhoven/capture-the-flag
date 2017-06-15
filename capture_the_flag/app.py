@@ -1,14 +1,10 @@
 import flask
 import flask_login
-import os
-
-os.chdir('<parent-directory>')
-
-from flask_restful import Api
 from capture_the_flag import database as db
 from capture_the_flag.models.user import load_user_from_session, User
 from capture_the_flag.session import SuperSecureSessionInterface
 from capture_the_flag.routes import files, index, login, logout, signup, users
+from flask_restful import Api
 
 
 # HACK: don't serve static files from the root path

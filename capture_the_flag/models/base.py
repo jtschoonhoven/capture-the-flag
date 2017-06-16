@@ -1,5 +1,7 @@
 from datetime import datetime
+
 from peewee import DateTimeField, Model
+
 from capture_the_flag import database as db
 
 

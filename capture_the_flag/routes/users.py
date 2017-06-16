@@ -1,5 +1,6 @@
 import flask
 import flask_login
+
 from capture_the_flag import database as db
 
 

@@ -1,7 +1,9 @@
 import random
 import time
+
 from peewee import DoesNotExist, PrimaryKeyField, TextField
 from flask_login.mixins import UserMixin
+
 from capture_the_flag.models.base import BaseModel
 
 

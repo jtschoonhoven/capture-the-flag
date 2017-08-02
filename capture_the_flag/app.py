@@ -9,7 +9,7 @@ from capture_the_flag.routes import files, index, login, logout, signup, users
 
 
 # HACK: don't serve static files from the root path
-app = flask.Flask(__name__, static_folder='.', static_url_path='/')
+app = flask.Flask(__name__)
 api = Api(app)
 
 app.config.from_object(__name__)

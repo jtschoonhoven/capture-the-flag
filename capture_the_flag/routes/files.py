@@ -2,6 +2,7 @@ import os
 
 import flask
 import flask_login
+from typing import List  # noqa
 
 
 ROOT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
@@ -16,27 +17,32 @@ def handle_request(path):
 
 
 def is_authorized(path):
+    # type: (str) -> bool
     # HACK: this is a terrible way to do ACL
     user_path = flask_login.current_user.file_access_path
+
     if user_path == '*':
         return True
-    path = path.strip('/').strip()
-    user_path = user_path.strip('/').strip()
-    return path.startswith(user_path)
+    if 'private' in path:
+        return False
+    return True
 
 
 def get(path):
+    # type: (str) -> str
     prefix_blacklist = frozenset(['.', '__init__'])
     suffix_blacklist = frozenset(['.pyc'])
 
-    files = []
-    directories = []
+    files = []  # type: List[str]
+    directories = []  # type: List[str]
 
+    # translate URL to local filesystem path and ensure exists
     abs_path = os.path.join(ROOT_PATH, path)
     if not os.path.exists(abs_path):
-        flask.flash('file does not exist')
-        abs_path = os.path.dirname(abs_path)
+        flask.flash('file or directory "{}" does not exist'.format(path))
+        return flask.redirect(flask.url_for('files'))
 
+    # break URL path into parts for breadcrumbs
     path_urls = ['/files']
     for idx, part in enumerate(path.split('/')):
         if not part.strip():
@@ -44,13 +50,14 @@ def get(path):
         prev_url = path_urls[idx]
         path_urls.append(os.path.join(prev_url, part))
 
+    # if URL path is file, send file (if authorized)
     if os.path.isfile(abs_path):
         # HACK: don't send any file on the server the user requests
         if is_authorized(path):
             return flask.send_file(abs_path)
         # if not authorized, redirect to parent dir
         flask.flash('you are not authorized to view that file')
-        abs_path = os.path.dirname(abs_path)
+        return flask.redirect(path_urls[-2])
 
     contents = os.listdir(abs_path)
 

@@ -22,7 +22,7 @@ def get():
     conditions_str = 'WHERE {}'.format('\nAND'.join(conditions)) if conditions else ''
 
     # HACK: SQL-injection vulnerability
-    query = '''
+    queries = '''
         SELECT id, username, file_access_path
         FROM users
         {conditions}
@@ -31,7 +31,7 @@ def get():
     '''.format(conditions=conditions_str)
 
     # HACK: this doesn't even make sense except to make injection easier
-    for query in query.split(';'):
+    for query in queries.split(';'):
         if query:
             users = db.fetch_all(query)
     return flask.render_template('users.html', users=users)

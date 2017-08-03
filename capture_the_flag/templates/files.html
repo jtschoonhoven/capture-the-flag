@@ -12,15 +12,43 @@
                     files
                 </a>
 
+
+                <!-- breadcrumbs -->
                 {% for path_url in path_urls[1:] %}
-                    <a href={{ path_url }}>
+                    <a href={{ path_url.rstrip('/') }}>
                         <span class="glyphicon glyphicon glyphicon-chevron-right"></span>
                         {{ path_url.rsplit('/')[-1] }}
                     </a>
                 {% endfor %}
 
-                    <hr />
+                <hr />
 
+                <!-- upload -->
+                <div id="upload-section" class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-4">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="input-group">
+                                <input type="file" id="file-selector" name="file" class="form-control"">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit">Upload</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- upload progress -->
+                <div id="progress-bar" class="row" hidden>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0%;">
+                            <span class="sr-only">60% Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <br />
+
+                <!-- files list -->
                 {% if contents %}
                     <p>{{ contents }}</p>
                 {% else %}
